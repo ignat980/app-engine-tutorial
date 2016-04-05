@@ -13,13 +13,27 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
+from google.appengine.api import users
 import webapp2
 
-class MainHandler(webapp2.RequestHandler):
+
+class MainPage(webapp2.RequestHandler):
     def get(self):
-        self.response.write('Hello world!')
+        # [START get_current_user]
+        # Checks for active Google account session
+        user = users.get_current_user()
+        # [END get_current_user]
+
+        # [START if_user]
+        if user:
+            self.response.headers['Content-Type'] = 'text/html; charset=utf-8'
+            self.response.write('Hello, ' + user.nickname())
+        # [END if_user]
+        # [START if_not_user]
+        else:
+            self.redirect(users.create_login_url(self.request.uri))
+        # [END if_not_user]
 
 app = webapp2.WSGIApplication([
-    ('/', MainHandler)
+    ('/', MainPage)
 ], debug=True)
