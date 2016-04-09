@@ -9,8 +9,12 @@ handlers:
   static_files: favicon.ico
   upload: favicon\.ico
 
+- url: /stylesheets
+  static_dir: stylesheets
+
 - url: /.*
   script: guestbook.app
+
 
 libraries:
 - name: webapp2
